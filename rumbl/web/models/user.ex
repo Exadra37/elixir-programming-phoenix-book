@@ -13,10 +13,11 @@ defmodule Rumbl.User do
    end
 
   def changeset(model, params \\ %{}) do
-  	
+
   	model
   	|> cast(params, ~w(name username), [])
   	|> validate_length(:username, min: 1, max: 20)
+    |> unique_constraint(:username)
 
   end
 
@@ -34,8 +35,8 @@ defmodule Rumbl.User do
   		  %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
   		    put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
 				_ ->
-					changeset  		   
-  		end	
+					changeset
+  		end
   end
 
 end
