@@ -9,9 +9,11 @@ defmodule Rumbl.User do
     field :password_hash, :string
     has_many :videos, Rumbl.Video
 
-    timestamps
-   end
+    timestamps()
+  end
 
+  # BOOK_FIX: chapter 4, page 60
+  # using \\ :empty doesn't work anymore
   def changeset(model, params \\ %{}) do
 
   	model
@@ -26,7 +28,7 @@ defmodule Rumbl.User do
   	model
   	|> changeset(params)
   	|> cast(params, ~w(password), [])
-  	|> validate_length(:password, min: 8, max: 100)
+  	|> validate_length(:password, min: 6, max: 100)
   	|> put_pass_hash()
   end
 

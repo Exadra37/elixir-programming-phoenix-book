@@ -1,5 +1,5 @@
 defmodule Rumbl.Auth do
-  
+
   import Plug.Conn
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   import Phoenix.Controller
@@ -12,10 +12,28 @@ defmodule Rumbl.Auth do
   end
 
   def call(conn, repo) do
+
     user_id = get_session(conn, :user_id)
-    user = user_id && repo.get(Rumbl.User, user_id)
-    IO.inspect(user)
-    assign(conn, :current_user, user)
+
+    cond do
+
+      # This first condition is eing added to making testing routes needing authentication easier.
+      # I completely disagree with this approach, but doing to follow along the book...
+      # Basiclly we are blinding trusting in the user injected in the connection, thus in my opinion not safe for production use.
+      user = conn.assigns[:current_user] ->
+        conn
+
+      # Previous code made now part of the conditional
+      user = user_id && repo.get(Rumbl.User, user_id) ->
+        assign(conn, :current_user, user)
+
+      # This condition is also to make easier to test the code for authenticated routes.
+      # But this one thus not raise security concerns, once is setting the user to nil.
+      true ->
+        assign(conn, :current_user, nil)
+
+    end
+
   end
 
   def login(conn, user) do
@@ -32,7 +50,7 @@ defmodule Rumbl.Auth do
     cond do
       user && checkpw(given_pass, user.password_hash) ->
         {:ok, login(conn, user)}
-      user -> 
+      user ->
         {:error, :unauthorized, conn}
       true ->
         dummy_checkpw()
