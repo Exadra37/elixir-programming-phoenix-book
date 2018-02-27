@@ -21,11 +21,11 @@ defmodule Rumbl.Auth do
       # I completely disagree with this approach, but doing to follow along the book...
       # Basiclly we are blinding trusting in the user injected in the connection, thus in my opinion not safe for production use.
       user = conn.assigns[:current_user] ->
-        conn
+        put_current_user(conn, user)
 
       # Previous code made now part of the conditional
       user = user_id && repo.get(Rumbl.User, user_id) ->
-        assign(conn, :current_user, user)
+        put_current_user(conn, user)
 
       # This condition is also to make easier to test the code for authenticated routes.
       # But this one thus not raise security concerns, once is setting the user to nil.
@@ -41,6 +41,17 @@ defmodule Rumbl.Auth do
     |> assign(:current_user, user)
     |> put_session(:user_id, user.id)
     |> configure_session(renew: true)
+  end
+
+
+  defp put_current_user(conn, user) do
+
+    token = Phoenix.Token.sign(conn, "user socket", user.id)
+
+    conn
+    |> assign(:current_user, user)
+    |> assign(:user_token, token)
+
   end
 
   def login_by_username_and_pass(conn, username, given_pass, opts) do
