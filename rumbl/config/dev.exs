@@ -22,7 +22,7 @@ use Mix.Config
 config :rumbl, Rumbl.Endpoint,
   http: [port: 4000],
   debug_errors: true,
-  code_reloader: true,
+  code_reloader: false,
   check_origin: false,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
                     cd: Path.expand("../", __DIR__)]]
@@ -49,8 +49,9 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :rumbl, Rumbl.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "phoenix_dev",
-  password: "secret_dev",
-  database: "rumbl_dev",
-  hostname: "database-dev",
+  username: System.get_env("POSTGRES_USER") || "${POSTGRES_USER}",
+  password: System.get_env("POSTGRES_PASSWORD") || "${POSTGRES_PASSWORD}",
+  database: System.get_env("POSTGRES_DB") || "${POSTGRES_DB}",
+  hostname: System.get_env("POSTGRES_HOSTNAME") || "${POSTGRES_HOSTNAME}",
   pool_size: 10
+
