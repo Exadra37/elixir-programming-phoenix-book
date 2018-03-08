@@ -14,6 +14,13 @@ defmodule Rumbl do
       supervisor(Rumbl.Endpoint, []),
       # Start your own worker by calling: Rumbl.Worker.start_link(arg1, arg2, arg3)
       # worker(Rumbl.Worker, [arg1, arg2, arg3]),
+
+      # We use a :temporary restart strategy that means when our worker crashes it will not be restarted.
+      #
+      # To always restart it on crash we want to use :permanent instead, that is the default behaviour,
+      # thus optional to be specified.
+      #worker(Rumbl.Counter, [5], restart: :temporary),
+      #worker(Rumbl.Counter, [5]),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
