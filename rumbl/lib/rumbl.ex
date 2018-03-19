@@ -12,10 +12,16 @@ defmodule Rumbl do
       supervisor(Rumbl.Repo, []),
       # Start the endpoint when the application starts
       supervisor(Rumbl.Endpoint, []),
+
+      # The Supervisor will start a children Supervisor for our backend
+      # Information System in Rumbl.InfoSys.Supervisor.start_link/0
+      supervisor(Rumbl.InfoSys.Supervisor, [])
+
       # Start your own worker by calling: Rumbl.Worker.start_link(arg1, arg2, arg3)
       # worker(Rumbl.Worker, [arg1, arg2, arg3]),
 
-      # We use a :temporary restart strategy that means when our worker crashes it will not be restarted.
+      # We use a :temporary restart strategy that means when our worker crashes
+      # it will not be restarted.
       #
       # To always restart it on crash we want to use :permanent instead, that is the default behaviour,
       # thus optional to be specified.

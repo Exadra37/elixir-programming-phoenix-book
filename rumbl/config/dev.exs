@@ -46,6 +46,9 @@ config :logger, :console, format: "[$level] $message\n"
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
+#config :rumbl, :wolfram, app_id: System.get_env("WOLFRAM_APP_ID") || "${WOLFRAM_APP_ID}"
+
+
 # Configure your database
 config :rumbl, Rumbl.Repo,
   adapter: Ecto.Adapters.Postgres,
@@ -54,3 +57,5 @@ config :rumbl, Rumbl.Repo,
   database: "rumbl_dev",
   hostname: "database-dev",
   pool_size: 10
+
+import_config "dev.secret.exs"
