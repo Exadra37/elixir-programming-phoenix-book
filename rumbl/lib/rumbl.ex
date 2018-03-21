@@ -14,8 +14,8 @@ defmodule Rumbl do
       supervisor(Rumbl.Endpoint, []),
 
       # The Supervisor will start a children Supervisor for our backend
-      # Information System in Rumbl.InfoSys.Supervisor.start_link/0
-      supervisor(Rumbl.InfoSys.Supervisor, [])
+      # Information System in InfoSys.Supervisor.start_link/0
+      supervisor(InfoSys.Supervisor, [])
 
       # Start your own worker by calling: Rumbl.Worker.start_link(arg1, arg2, arg3)
       # worker(Rumbl.Worker, [arg1, arg2, arg3]),

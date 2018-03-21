@@ -1,4 +1,4 @@
-defmodule Rumbl.InfoSys.Wolfram do
+defmodule InfoSys.Wolfram do
 
   @moduledoc """
   # Rumb Information System Wolfram Backend
@@ -8,14 +8,14 @@ defmodule Rumbl.InfoSys.Wolfram do
 
   import SweetXml
 
-  alias Rumbl.InfoSys.Result
+  alias InfoSys.Result
 
   @doc """
   ## Entrypoint for the Supervisor
 
-  This call comes from Rumbl.InfoSys.start_link/5, that is triggered when in
-  Rumbl.InfoSys.spawn_query/3 we start this backend as a child worker as per
-  defined in Rumbl.InfoSys.Supervisor/init/1.
+  This call comes from InfoSys.start_link/5, that is triggered when in
+  InfoSys.spawn_query/3 we start this backend as a child worker as per
+  defined in InfoSys.Supervisor/init/1.
 
   As result a Task is launched to handle the query against the Wolfram Api and
   we tell to that Task to use the fetch/4 of this module to perform it.
@@ -30,7 +30,7 @@ defmodule Rumbl.InfoSys.Wolfram do
   This is called by the Task we invoked in start_link/4.
 
   We will query the Wolfram Api and fetch their xml response, parse it and send
-  a message to Rumbl.InfoSys.await_result/3 with the parsed results.
+  a message to InfoSys.await_result/3 with the parsed results.
   """
   def fetch(query_str, query_ref, owner, _limit) do
 
@@ -63,7 +63,7 @@ defmodule Rumbl.InfoSys.Wolfram do
   end
 
   defp app_id() do
-    Application.get_env(:rumbl, :wolfram)[:app_id]
+    Application.get_env(:info_sys, :wolfram)[:app_id]
   end
 
 end

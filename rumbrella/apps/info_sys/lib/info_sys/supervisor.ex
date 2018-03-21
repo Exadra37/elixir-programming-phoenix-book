@@ -1,10 +1,10 @@
-defmodule Rumbl.InfoSys.Supervisor do
+defmodule InfoSys.Supervisor do
 
   @moduledoc """
   # Rumbl Information System Supervisor
 
   This is a children Supervisor that will be responsible to supervise all
-  implemented backends for this Information System in module Rumbl.InfoSys.
+  implemented backends for this Information System in module InfoSys.
 
   So as a children Supervisor it will need to implement the Supervisor
   behaviour by adhere to the required API contract:
@@ -34,7 +34,7 @@ defmodule Rumbl.InfoSys.Supervisor do
   children Supervisor will supervise.
 
   So init/1 will be called each time the Supervisor.start_child/2 is invoked,
-  like we can see in Rumbl.InfoSys.spawn_query/3.
+  like we can see in InfoSys.spawn_query/3.
   """
   def init(_opts) do
 
@@ -43,13 +43,13 @@ defmodule Rumbl.InfoSys.Supervisor do
       # Using the :temporary strategy for restart:, means that when our worker
       # crashes we don't care about it, thus the Supervisor will not try to
       # restart our crashed worker.
-      worker(Rumbl.InfoSys, [], restart: :temporary)
+      worker(InfoSys, [], restart: :temporary)
     ]
 
     # To surpervise the children We will use the strategy :simple_one_for_one
     # that does not start the children immediately as :one_for_one would, thus
     # we can control when we want to start the children workers, normmaly when
-    # we are about to use them, like in Rumbl.InfoSys.spawn_query/3.
+    # we are about to use them, like in InfoSys.spawn_query/3.
     supervise children, strategy: :simple_one_for_one
 
   end
