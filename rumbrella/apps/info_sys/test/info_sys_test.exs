@@ -1,8 +1,43 @@
 defmodule InfoSysTest do
+
   use ExUnit.Case
+
+  alias InfoSys.Result
+
   doctest InfoSys
 
-  test "the truth" do
-    assert 1 + 1 == 2
+
+  defmodule TestBackend do
+
+    def start_link(query, ref, owner, limit) do
+      Task.start_link(__MODULE__, :fetch, [query, ref, owner, limit])
+    end
+
+    def fetch("result", ref, owner, _limit) do
+      send(owner, {:results, ref, [%Result{backend: "test", text: "result"}]})
+    end
+
+    def fetch("none", ref, owner, _limit) do
+      send(owner, {:results, ref, []})
+    end
+
   end
+
+
+  test "compute/2 with backend results" do
+
+    expected_result = [%Result{backend: "test", text: "result"}]
+
+    result =  InfoSys.compute("result", backends: [TestBackend])
+
+    assert expected_result = result
+
+  end
+
+  test "compute/2 with no backend results" do
+
+    assert [] = InfoSys.compute("none", backends: [TestBackend])
+
+  end
+
 end
