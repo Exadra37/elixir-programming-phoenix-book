@@ -5,6 +5,10 @@ defmodule Rumbl.Mixfile do
     [
       app: :rumbl,
       version: "0.0.1",
+      build_path: "../../_build",
+      config_path: "../../config/config.exs",
+      deps_path: "../../deps",
+      lockfile: "../../mix.lock",
       elixir: "~> 1.3",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -28,7 +32,8 @@ defmodule Rumbl.Mixfile do
         :gettext,
         :phoenix_ecto,
         :postgrex,
-        :comeonin
+        :comeonin,
+        :info_sys
       ]
     ]
   end
@@ -51,7 +56,7 @@ defmodule Rumbl.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 2.0"},
-      {:sweet_xml, "~> 0.5.0"}
+      {:info_sys, in_umbrella: true}
     ]
   end
 
