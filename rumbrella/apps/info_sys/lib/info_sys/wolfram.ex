@@ -56,6 +56,12 @@ defmodule InfoSys.Wolfram do
 
     payload = String.to_char_list(text)
 
+    # TODO: fetching the url MUST NOT be a responsability of this module.
+    #
+    # WHY:
+    #  → we are violating the Single Responsability Principle from SOLID code.
+    #  → makes testing this module impossible, unless we want to violate our
+    #    system boundaries, that we MUST never do.
     {:ok, {_, _, body}} = :httpc.request(payload)
 
     body
