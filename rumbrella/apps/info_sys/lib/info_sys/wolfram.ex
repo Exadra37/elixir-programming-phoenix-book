@@ -50,6 +50,13 @@ defmodule InfoSys.Wolfram do
     send(owner, {:results, query_ref, results})
   end
 
+  # Bending the production code to make it easier to test is so bad...
+  # Instead of accepting what http client we want to use from the environment
+  # to make it esay to stub it in tests, the Author of the book should have
+  # extracted the http client to another module, thus isolating and stubing it
+  # in tests would not require any environment setup.
+  @http Application.get_env(:info_sys, :wolfram)[:http_client] || :httpc
+
   defp fech_xml(query_str) do
 
     text = "http://api.wolframalpha.com/v2/query" <> "?appid=#{app_id()}" <> "&input=#{URI.encode(query_str)}&format=plaintext"
@@ -62,7 +69,7 @@ defmodule InfoSys.Wolfram do
     #  → we are violating the Single Responsability Principle from SOLID code.
     #  → makes testing this module impossible, unless we want to violate our
     #    system boundaries, that we MUST never do.
-    {:ok, {_, _, body}} = :httpc.request(payload)
+    {:ok, {_, _, body}} = @http.request(payload)
 
     body
 
